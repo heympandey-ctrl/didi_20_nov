@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Happy Birthday Didi! 🎂</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <header class="top-bar">
+    <span class="app-badge">✨ Special Edition</span>
+    <button id="sound-toggle" class="icon-btn" title="Toggle Birthday Tune">🔇</button>
+  </header>
+
+  <!-- Main Multi-Page Viewport (Zero Long Scrolling) -->
+  <main class="pages-wrapper">
+
+    <!-- ==================== PAGE 1: CAKE & WISH ==================== -->
+    <section id="page-cake" class="page active">
+      <div class="page-content center-flex">
+        <p class="subtitle-tag">Today is all about you</p>
+        <h1 class="hero-title">Happy Birthday,<br><span id="display-sister-name">Didi</span>! 🎉</h1>
+
+        <div class="cake-stage" id="cake-stage">
+          <div class="cake">
+            <div class="candles" id="candles-row">
+              <div class="candle"><div class="flame"></div><div class="smoke"></div></div>
+              <div class="candle"><div class="flame"></div><div class="smoke"></div></div>
+              <div class="candle"><div class="flame"></div><div class="smoke"></div></div>
+            </div>
+            <div class="icing"></div>
+            <div class="cake-layer top-layer"></div>
+            <div class="cake-layer bottom-layer"></div>
+            <div class="plate"></div>
+          </div>
+        </div>
+
+        <p id="cake-instruction" class="hint-text">Tap the candles to blow them out & make a wish!</p>
+        <button id="blow-btn" class="primary-btn">💨 Blow Candles</button>
+
+        <div id="wish-box" class="wish-box hidden">
+          <input type="text" id="wish-input" placeholder="Type a secret birthday wish..." maxlength="60" />
+          <button id="send-wish-btn" class="secondary-btn">Send ✨</button>
+        </div>
+        <p id="wish-sent-msg" class="wish-sent hidden">🌟 Wish launched into the universe!</p>
+
+        <button class="next-page-btn" data-target="page-memories">Open Memory Lane →</button>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 2: MEMORIES & THEN VS NOW ==================== -->
+    <section id="page-memories" class="page">
+      <div class="page-content scrapbook-bg">
+        <h2 class="section-title">Memory Lane 📸</h2>
+        <p class="sub-hint">No dates, just pure chaos & good times</p>
+
+        <!-- Then vs Now Interactive Slider -->
+        <div class="then-now-card">
+          <h3 class="tn-title">Then vs. Now ✨</h3>
+          <div class="tn-container" id="tn-container">
+            <img src="now.jpg" alt="Now" class="tn-img" onerror="this.src='https://placehold.co/400x300/ffe4e6/ff4d8d?text=Add+now.jpg'" />
+            <div class="tn-overlay" id="tn-overlay">
+              <img src="then.jpg" alt="Then" class="tn-img" id="tn-then-img" onerror="this.src='https://placehold.co/400x300/e0f2fe/0284c7?text=Add+then.jpg'" />
+            </div>
+            <span class="tn-badge tn-left">THEN</span>
+            <span class="tn-badge tn-right">NOW</span>
+            <div class="tn-handle" id="tn-handle">
+              <div class="tn-circle">↔</div>
+            </div>
+          </div>
+          <p class="tn-hint">Drag slider left or right</p>
+        </div>
+
+        <!-- Polaroid Scrapbook Grid (No Dates) -->
+        <div class="polaroid-grid" id="polaroid-grid">
+          <!-- Populated dynamically from script.js -->
+        </div>
+
+        <button class="next-page-btn" data-target="page-games">Play Sibling Games →</button>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 3: MINI-GAMES ==================== -->
+    <section id="page-games" class="page">
+      <div class="page-content">
+        <h2 class="section-title">Sibling Challenge 🎮</h2>
+        <p class="sub-hint">Beat both games to unlock the 4-digit Secret Vault code!</p>
+
+        <!-- Game Switcher Pills -->
+        <div class="game-tabs">
+          <button class="game-tab active" data-game="game-catch">🎁 Gift Catcher</button>
+          <button class="game-tab" data-game="game-quiz">🤔 Favorite Child?</button>
+        </div>
+
+        <!-- GAME 1: Catch Gifts, Dodge Chores -->
+        <div id="game-catch" class="game-panel active">
+          <div class="game-hud">
+            <span>Score: <strong id="catch-score">0</strong> / 10</span>
+            <span id="clue-1-badge" class="clue-pill locked">Clue 1: ??</span>
+          </div>
+          <canvas id="catch-canvas" width="320" height="310"></canvas>
+          <p class="game-controls-hint">Slide your finger across the box to catch 🎂🎁 and dodge 📚🧹!</p>
+          <button id="start-catch-btn" class="primary-btn">Start Game</button>
+        </div>
+
+        <!-- GAME 2: Rigged Sibling Quiz -->
+        <div id="game-quiz" class="game-panel">
+          <div class="game-hud">
+            <span>Question <strong id="quiz-num">1</strong> / 3</span>
+            <span id="clue-2-badge" class="clue-pill locked">Clue 2: ??</span>
+          </div>
+          <div class="quiz-card">
+            <h3 id="quiz-question">Loading question...</h3>
+            <div id="quiz-options" class="quiz-options"></div>
+            <p id="quiz-roast" class="roast-text hidden"></p>
+          </div>
+        </div>
+
+        <button class="next-page-btn" data-target="page-treats">Spin Treat Wheel →</button>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 4: TREAT WHEEL ==================== -->
+    <section id="page-treats" class="page">
+      <div class="page-content center-flex">
+        <h2 class="section-title">Didi's Treat Wheel 🎡</h2>
+        <p class="sub-hint">Spin to claim an official birthday coupon from me!</p>
+
+        <div class="wheel-wrapper">
+          <div class="wheel-pointer">▼</div>
+          <canvas id="wheel-canvas" width="280" height="280"></canvas>
+        </div>
+
+        <button id="spin-btn" class="primary-btn">Spin the Wheel! 🎯</button>
+
+        <div id="voucher-card" class="voucher-card hidden">
+          <span class="voucher-tag">OFFICIAL BIRTHDAY VOUCHER</span>
+          <h3 id="voucher-prize">Free Coffee / Chai Run</h3>
+          <p>Screenshot this & send it to redeem anytime!</p>
+        </div>
+
+        <button class="next-page-btn" data-target="page-vault">Open Secret Vault →</button>
+      </div>
+    </section>
+
+    <!-- ==================== PAGE 5: SECRET VAULT ==================== -->
+    <section id="page-vault" class="page">
+      <div class="page-content center-flex">
+        <h2 class="section-title">The Secret Vault 🔐</h2>
+
+        <!-- Locked State -->
+        <div id="vault-locked" class="vault-box">
+          <div class="lock-icon">🔒</div>
+          <p>Enter the 4-digit passcode (or win both mini-games to reveal the clues!)</p>
+
+          <div class="clues-summary">
+            <span id="vault-clue-1">First 2 digits: even</span>
+            <span id="vault-clue-2">Last 2 digits: odd</span>
+          </div>
+
+          <input type="tel" id="vault-input" maxlength="4" placeholder="• • • •" class="pin-input" />
+          <p id="vault-error" class="error-text hidden">Wrong code! Play the mini-games for clues 😉</p>
+          <button id="unlock-btn" class="primary-btn">Unlock Letter 💌</button>
+        </div>
+
+        <!-- Unlocked Letter State -->
+        <div id="vault-unlocked" class="letter-card hidden">
+          <div class="letter-header">💖 For My Elder Sister</div>
+          <p id="letter-body" class="letter-text"></p>
+          <p class="letter-sign">— <span id="display-sender-name">Mithun</span></p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Fixed Mobile Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-target="page-cake">
+      <span class="nav-icon">🎂</span>
+      <span class="nav-label">Cake</span>
+    </button>
+    <button class="nav-item" data-target="page-memories">
+      <span class="nav-icon">📸</span>
+      <span class="nav-label">Memories</span>
+    </button>
+    <button class="nav-item" data-target="page-games">
+      <span class="nav-icon">🎮</span>
+      <span class="nav-label">Games</span>
+    </button>
+    <button class="nav-item" data-target="page-treats">
+      <span class="nav-icon">🎡</span>
+      <span class="nav-label">Treats</span>
+    </button>
+    <button class="nav-item" data-target="page-vault">
+      <span class="nav-icon">🔐</span>
+      <span class="nav-label">Vault</span>
+    </button>
+  </nav>
+
+  <script src="script.js"></script>
+  <!-- Background Music Tracks -->
+  <audio id="bg-music-main" src="main-song.mp3" loop preload="auto"></audio>
+  <audio id="bg-music-bday" src="bday-song.mp3" loop preload="auto"></audio>
+  <!-- <audio id="bg-music-bday" src="bday-song.mp3" loop preload="auto"></audio>
+<script src="script.js"></script> -->
+  <script src="script.js"></script>
+</body>
+</html>
